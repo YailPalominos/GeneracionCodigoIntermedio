@@ -158,35 +158,9 @@ public class Analisis {
                         parteOperacionSeparada = parteOperacionSeparada.replace("*", " * ");
                         operacionSeparada = operacionSeparada + parteOperacionSeparada;
 
-                        GenerarOperacion(asignacion[0], parteOperacionSeparada);
+                        String operacionPrefija = RecorridoPrefijo.realizarPrefijo(operacionSeparada);
+                        GenerarOperacion(asignacion[0], operacionSeparada);
 
-                        String operacion = asignacion[1];
-                        operacion = operacion.replace("(", "");
-                        operacion = operacion.replace(")", "");
-                        operacion = operacion.replace(";", "");
-
-                        operacion = operacion.replace("+", " ");
-                        operacion = operacion.replace("-", " ");
-                        operacion = operacion.replace("/", " ");
-                        operacion = operacion.replace("*", " ");
-
-                        String[] variables = operacion.split(" ");
-
-                        for (String variable : variables) {
-                            if (VerificarConstante(variable) == false) {
-                                if (ComprobarToken(variable) == false) {
-                                    GenerarError("No se encontro el token", variable);
-                                } else {
-                                    Simbolo simbolo = VerSimbolo(variable);
-                                    if (tipo != simbolo.tipo) {
-                                        GenerarError(
-                                                "No se puede realizar la asignación si se utiliza una variable de diferente tipo al de la asignacion '"
-                                                        + tipo + "' -> '" + simbolo.tipo + "'",
-                                                variable);
-                                    }
-                                }
-                            }
-                        }
                         palabras = "";
                     }
 
@@ -199,8 +173,59 @@ public class Analisis {
     }
 
     public void GenerarOperacion(String variable, String valor) {
- 
-        System.out.println(variable + "  >>  " + valor);
+
+        // e=a+b*c/d;
+        // g=f*2;
+        String[] operandos = valor.split(" ");
+
+        boolean guardado = false;
+        boolean asignacion = true;
+        String operador = "";
+
+        AgregarSimbolo("temp" + IdTemporales, "=", IdTemporales, 1,
+                "" + linea, operandos[0]);
+
+        for (int x = 1; x < operandos.length; x++) {
+            if (esOperador(operandos[x])) {
+                operador = operandos[x];
+            } else {
+
+                if (guardado)
+                    IdTemporales += 1;
+                AgregarSimbolo("temp" + IdTemporales, asignacion == true ? operador : "=", IdTemporales, 1,
+                        "" + linea, operandos[x]);
+                if (guardado)
+                    IdTemporales -= 1;
+
+                if (operandos.length > 3) {
+                    // = temp1 temp2
+                    IdTemporales += 1;
+                    AgregarSimbolo("temp" + IdTemporales, asignacion == false ? operador : "=",
+                            IdTemporales, 1,
+                            "" + linea, "temp" + (IdTemporales - 1));
+                    guardado = true;
+
+                }
+                asignacion = false;
+            }
+        }
+
+        // Agrega la asignación
+        AgregarSimbolo(variable, "=", IdTemporales, 1, "" + linea, "temp" + IdTemporales);
+    }
+
+    private boolean esOperador(String caracteres) {
+        if (caracteres.length() == 1) {
+            if (caracteres.equals("+") || caracteres.equals("-") || caracteres.equals("*") || caracteres.equals("/")) {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (caracteres.length() > 1) {
+            return false;
+        } else {
+            return false;
+        }
     }
 
     public boolean ComprobarToken(String token) {

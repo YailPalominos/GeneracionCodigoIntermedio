@@ -1,0 +1,10 @@
+Entero x
+Entero y
+Entero z
+Leer x
+Leer y
+Leer z
+= temp1 y
+/ temp1 z
+= x temp1
+Escribir x

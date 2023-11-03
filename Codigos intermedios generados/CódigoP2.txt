@@ -1,0 +1,19 @@
+Real a
+Real b
+Real c
+Real d
+Real e
+Leer a
+Leer b
+Leer c
+Leer d
+Leer e
+= temp1 a
++ temp1 b
+= temp2 temp1
+= temp3 c
+* temp3 temp2
+= temp4 d
+/ temp4 temp3
+= e temp4
+Escribir e

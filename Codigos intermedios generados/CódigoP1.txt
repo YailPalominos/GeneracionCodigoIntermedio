@@ -1,0 +1,17 @@
+Real a
+Real b
+Real c
+Real d
+Real e
+Entero f
+Entero g
+Leer a
+Leer b
+Leer c
+Leer d
+Leer f
+= temp1 f
+* temp1 2
+= g temp1
+Escribir e
+Escribir g

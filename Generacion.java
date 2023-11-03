@@ -19,6 +19,10 @@ public class Generacion {
                                 contenido += simbolo.tipo + " " + simbolo.token + "\n";
                         }
 
+                        if (simbolo.token.contains("temp") || simbolo.valor.contains("temp")) {
+                                contenido += simbolo.tipo + " " + simbolo.token + " " + simbolo.valor + "\n";
+                        }
+
                 }
 
                 File carpetaFile = new File(

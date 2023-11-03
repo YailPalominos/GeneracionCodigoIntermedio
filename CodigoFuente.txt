@@ -1,9 +1,4 @@
-
- Real a,b,c,d;
- Entero f,g;
- Leer(a,b,c,d);
- Leer(f);
- e=a+b*c/d;
- g=f*2;
- Escribir(e);
- Escribir(g);
+Entero x,y,z;
+Leer(x,y,z);
+x=y/z;
+Escribir(x);
